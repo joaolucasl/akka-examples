@@ -3,6 +3,12 @@ buildscript {
 		kotlinVersion = '1.2.41'
 		springBootVersion = '2.0.2.RELEASE'
 		dockerVersion = '1.2'
+        akkaVersion = '2.5.11'
+        scalaJavaCompatVersion = '0.8.0'
+        guavaVersion = '24.1-jre'
+        akkaPersistenceJdbcVersion = '3.2.0'
+        orgSlf4jVersion = '1.7.25'
+        logbackVersion = '1.2.3'
 	}
 	repositories {
 		mavenCentral()
@@ -44,16 +50,29 @@ repositories {
 
 
 dependencies {
+	//compile('org.springframework.shell:spring-shell-starter:2.0.0.RELEASE')
 	compile('org.springframework.boot:spring-boot-starter-actuator')
 	compile('org.springframework.boot:spring-boot-starter-integration')
 	compile('org.springframework.boot:spring-boot-starter-webflux')
 	compile('com.fasterxml.jackson.module:jackson-module-kotlin')
-	//compile('org.springframework.shell:spring-shell-starter:2.0.0.RELEASE')
 	compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	compile("org.jetbrains.kotlin:kotlin-reflect")
 	runtime('org.springframework.boot:spring-boot-devtools')
 	runtime('mysql:mysql-connector-java')
-	//compileOnly('org.springframework.boot:spring-boot-configuration-processor')
+	compileOnly('org.springframework.boot:spring-boot-configuration-processor')
+    compile("org.apache.commons:commons-lang3")
+    compile("com.typesafe.akka:akka-actor_2.12:${akkaVersion}")
+    compile("com.typesafe.akka:akka-persistence_2.12:${akkaVersion}")
+    compile("com.typesafe.akka:akka-persistence-query_2.12:${akkaVersion}")
+    compile("com.typesafe.akka:akka-slf4j_2.12:${akkaVersion}")
+    compile("com.github.dnvriend:akka-persistence-jdbc_2.12:${akkaPersistenceJdbcVersion}")
+    compile("org.scala-lang.modules:scala-java8-compat_2.12:${scalaJavaCompatVersion}")
+    compile("com.google.guava:guava:${guavaVersion}")
+    compile("org.slf4j:slf4j-api:${orgSlf4jVersion}")
+    compile("org.slf4j:jcl-over-slf4j:${orgSlf4jVersion}")
+    compile("ch.qos.logback:logback-classic:${logbackVersion}")
+    compile("ch.qos.logback:logback-core:${logbackVersion}")
+    testCompile("com.typesafe.akka:akka-testkit_2.12:${akkaVersion}")
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('io.projectreactor:reactor-test')
 }
