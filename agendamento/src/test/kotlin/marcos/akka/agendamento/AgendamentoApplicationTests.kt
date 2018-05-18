@@ -1,5 +1,6 @@
-package marcos.akka.atorlocal
+package marcos.akka.agendamento
 
+import marcos.akka.agendamento.AgendamentoApplication
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.boot.test.context.SpringBootTest
@@ -11,6 +12,7 @@ class AgendamentoApplicationTests {
 
 	@Test
 	fun contextLoads() {
+        println("Porra")
 	}
 
 }
