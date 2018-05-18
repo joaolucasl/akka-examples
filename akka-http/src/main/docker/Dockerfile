@@ -3,7 +3,7 @@ MAINTAINER marcos.arruda@moip.com.br
 VOLUME /tmp
 EXPOSE 8082
 
-ENV USER_NAME agendamento
+ENV USER_NAME akka-http
 ENV APP_HOME /home/$USER_NAME/app
 ENV APP_NAME $USER_NAME-0.0.1-SNAPSHOT.jar
 
