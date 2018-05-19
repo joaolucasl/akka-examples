@@ -1,3 +1,7 @@
+.idea/
+.gradle/
+*.iml
+build/
 */.gradle/
 */build/
 */classes/

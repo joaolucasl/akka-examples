@@ -1,0 +1,12 @@
+rootProject.name = 'akka-examples'
+
+include 'common-model'
+include 'ator-local'
+include 'ator-remoto'
+include 'agendamento'
+include 'cluster'
+include 'roteamento'
+include 'sharding'
+include 'akka-http'
+include 'maquinaDeEstadoFinito'
+include 'persistencia'
