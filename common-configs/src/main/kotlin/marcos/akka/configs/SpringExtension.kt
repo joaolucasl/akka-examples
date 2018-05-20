@@ -4,6 +4,7 @@ import akka.actor.AbstractExtensionId
 import akka.actor.ExtendedActorSystem
 import akka.actor.Extension
 import akka.actor.Props
+import marcos.akka.actor.LocalActorProducer
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
 import org.springframework.stereotype.Service
@@ -26,7 +27,7 @@ class SpringExtension : AbstractExtensionId<SpringExtension.SpringExt>(), Applic
 
         fun props(actorBeanName: String, specificName: String): Props {
             return Props.create(
-                    MyActorProducer::class.java, applicationContext, actorBeanName, specificName)
+                    LocalActorProducer::class.java, applicationContext, actorBeanName, specificName)
         }
     }
 }
