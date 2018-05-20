@@ -1,5 +1,6 @@
 rootProject.name = 'akka-examples'
 
+include 'common-configs'
 include 'common-model'
 include 'ator-local'
 include 'ator-remoto'
