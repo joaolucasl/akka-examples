@@ -4,8 +4,20 @@ import akka.actor.ActorRef
 import akka.actor.ActorRefFactory
 import akka.actor.Props
 import akka.actor.UntypedActor
+import akka.util.Timeout
+import scala.concurrent.duration.FiniteDuration
+import java.util.concurrent.TimeUnit
 import kotlin.reflect.KClass
 
+
+val duration = FiniteDuration.create(10, TimeUnit.SECONDS)
+val timeout = Timeout.durationToTimeout(duration)
+
+fun printPretty(ref:String, msg:String){
+    println("")
+    println(">>>>>>>>>>>>>>>>  FROM $ref: message: \"$msg\"")
+    println("")
+}
 fun akkaMain(vararg clazzes: KClass<*>) {
     val array = clazzes.map { it.java.name }.toTypedArray()
     akka.Main.main(array)
