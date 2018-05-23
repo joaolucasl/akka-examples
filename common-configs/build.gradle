@@ -1,12 +1,1 @@
-dependencies {
-    compile project(':common-model')
-    compile project(':ator-local')
-    compile project(':ator-remoto')
-    compile project(':agendamento')
-    compile project(':cluster')
-    compile project(':roteamento')
-    compile project(':sharding')
-    compile project(':akka-http')
-    compile project(':maquinaDeEstadoFinito')
-    compile project(':persistencia')
-}
+
