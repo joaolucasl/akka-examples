@@ -30,7 +30,7 @@ allprojects {
     apply plugin: 'kotlin'
     apply plugin: 'kotlin-spring'
     apply plugin: 'idea'
-    if(project.name.endsWith("remote-node") || project.name.equals("akka-examples")){
+    if(project.name.endsWith("node") || project.name.equals("akka-examples")){
         apply plugin: 'docker'
         apply plugin: 'org.springframework.boot'
     }
@@ -63,7 +63,7 @@ allprojects {
 
 
     dependencies {
-        if(project.name.endsWith("remote-node") || project.name.equals("akka-examples")){
+        if(project.name.endsWith("node") || project.name.equals("akka-examples")){
             compile('org.springframework.boot:spring-boot-starter')
             testCompile('org.springframework.boot:spring-boot-starter-test')
         }
@@ -106,7 +106,7 @@ allprojects {
             compile project(':persistencia')
         }
 
-        if(project.name.endsWith("remote-node")){
+        if(project.name.endsWith("node")){
             compile project(':common-configs')
             compile project(':common-model')
             compile project(':ator-local')
