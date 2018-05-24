@@ -30,8 +30,7 @@ allprojects {
     apply plugin: 'kotlin'
     apply plugin: 'kotlin-spring'
     apply plugin: 'idea'
-    if(!project.name.equals("common-configs") && !project.name.equals("common-model")
-    && !project.name.equals("ator-local") && !project.name.equals("ator-remoto")){
+    if(project.name.endsWith("remote-node") || project.name.equals("akka-examples")){
         apply plugin: 'docker'
         apply plugin: 'org.springframework.boot'
     }
@@ -64,8 +63,7 @@ allprojects {
 
 
     dependencies {
-        if(!project.name.equals("common-configs") && !project.name.equals("common-model")
-        && !project.name.equals("ator-local") && !project.name.equals("ator-remoto")){
+        if(project.name.endsWith("remote-node") || project.name.equals("akka-examples")){
             compile('org.springframework.boot:spring-boot-starter')
             testCompile('org.springframework.boot:spring-boot-starter-test')
         }
@@ -104,9 +102,22 @@ allprojects {
             compile project(':cluster')
             compile project(':roteamento')
             compile project(':sharding')
-            compile project(':akka-http')
             compile project(':maquinaDeEstadoFinito')
             compile project(':persistencia')
+        }
+
+        if(project.name.endsWith("remote-node")){
+            compile project(':common-configs')
+            compile project(':common-model')
+            compile project(':ator-local')
+            compile project(':ator-remoto')
+            compile project(':agendamento')
+            compile project(':cluster')
+            compile project(':roteamento')
+            compile project(':sharding')
+            compile project(':maquinaDeEstadoFinito')
+            compile project(':persistencia')
+
         }
 
         if(project.name.equals("akka-examples")){
@@ -124,7 +135,6 @@ dependencies {
 	compile project(':cluster')
 	compile project(':roteamento')
 	compile project(':sharding')
-	compile project(':akka-http')
 	compile project(':maquinaDeEstadoFinito')
 	compile project(':persistencia')
 }
