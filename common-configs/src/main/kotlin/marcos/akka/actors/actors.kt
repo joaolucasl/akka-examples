@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-class ActorCreator(var localActorCreated:Boolean=false, var remoteActorCreated:Boolean=false) {
+class ActorCreator(var localActorCreated:Boolean=false, var remoteActorCreated:Boolean=false, var agendamentoRemoteActorCreated:Boolean=false) {
 
     @Autowired
     private lateinit var actorSystem: ActorSystem
@@ -28,5 +28,12 @@ class ActorCreator(var localActorCreated:Boolean=false, var remoteActorCreated:B
         val remoteActor1: ActorRef = actorSystem.actorOf(props, "remoteActor1")
         remoteActor1.tell(StartCommand(), ActorRef.noSender())
         remoteActorCreated = true
+    }
+
+    fun createAgendamentoRemoteActor() {
+        val props: Props = springExtension.get(actorSystem).actorProps("agendamentoRemoteActor", "agendamentoRemoteActor1")
+        val agendamentoRemoteActor1: ActorRef = actorSystem.actorOf(props, "agendamentoRemoteActor1")
+        agendamentoRemoteActor1.tell(StartCommand(), ActorRef.noSender())
+        agendamentoRemoteActorCreated = true
     }
 }

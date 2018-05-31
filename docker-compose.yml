@@ -1,20 +1,58 @@
 ---
-version: "3"
+version: "2"
 services:
   generic-local-jvm-1:
     image: marcos.akka/generic-local-node:1.0-SNAPSHOT
-    domainname: generic-local-jvm-1
     hostname: generic-local-jvm-1
     container_name: generic-local-jvm-1
     ports:
       - "8081:8082"
     depends_on:
       - generic-remote-jvm-1
+    networks:
+      akka_net:
+        ipv4_address: 10.5.0.3
 
   generic-remote-jvm-1:
     image: marcos.akka/generic-remote-node:1.0-SNAPSHOT
-    domainname: generic-remote-jvm-1
     hostname: generic-remote-jvm-1
     container_name: generic-remote-jvm-1
     ports:
-          - "8082:8082"
+      - "8082:8082"
+    networks:
+      akka_net:
+        ipv4_address: 10.5.0.4
+
+  agendamento-remote-jvm-1:
+    image: marcos.akka/agendamento-remote-node:1.0-SNAPSHOT
+    hostname: agendamento-remote-jvm-1
+    container_name: agendamento-remote-jvm-1
+    ports:
+      - "8083:8082"
+    networks:
+      akka_net:
+        ipv4_address: 10.5.0.5
+
+  #clustering-seed-remote-jvm-1:
+  #  image: marcos.akka/clustering-seed-node:1.0-SNAPSHOT
+  #  domainname: clustering-seed-remote-jvm-1
+  #  hostname: clustering-seed-remote-jvm-1
+  #  container_name: clustering-seed-remote-jvm-1
+  #  ports:
+  #    - "8084:8082"
+
+  #clustering-remote-jvm-1:
+  #  image: marcos.akka/clustering-remote-node:1.0-SNAPSHOT
+  #  domainname: clustering-remote-jvm-1
+  #  hostname: clustering-remote-jvm-1
+  #  container_name: clustering-remote-jvm-1
+  #  ports:
+  #    - "8085:8082"
+
+networks:
+  akka_net:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 10.5.0.0/16
+         gateway: 10.5.0.1

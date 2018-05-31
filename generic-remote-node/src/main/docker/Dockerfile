@@ -18,7 +18,7 @@ RUN chmod +x $APP_HOME/wait-for-it.sh
 ADD $APP_NAME $APP_HOME/$USER_NAME.jar
 RUN chown $USER_NAME $APP_HOME/$USER_NAME.jar
 
-USER $USER_NAME
+USER root
 WORKDIR $APP_HOME
 RUN bash -c "touch $USER_NAME.jar"
 

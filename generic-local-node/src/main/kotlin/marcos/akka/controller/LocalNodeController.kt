@@ -25,4 +25,7 @@ class LocalNodeController @Autowired constructor(private val actorCreator: Actor
 
     @GetMapping("/remote")
     private fun getRemote(): Mono<String> = localService.callRemoteActor().map { it.messageContent as String }
+
+    @GetMapping("/remote/agendamento/start")
+    private fun agendamentoStart():Mono<String> = localService.startAgendamento()
 }

@@ -7,10 +7,7 @@ import akka.pattern.Patterns
 import marcos.akka.configs.SpringExtension
 import marcos.akka.configs.toMono
 import marcos.akka.extensions.timeout
-import marcos.akka.model.MessageCommand
-import marcos.akka.model.MessageType
-import marcos.akka.model.RemoteRequestMessageCommand
-import marcos.akka.model.RemoteResponseMessageCommand
+import marcos.akka.model.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
@@ -32,5 +29,12 @@ class LocalService {
         val localActor1: ActorSelection = actorSystem.actorSelection("/user/localActor1")
         val message = RemoteRequestMessageCommand(MessageType.MESSAGE, "Ola, remoto!")
         return toMono(Patterns.ask(localActor1, message, timeout))
+    }
+
+    fun startAgendamento():Mono<String> {
+        val localActor1: ActorSelection = actorSystem.actorSelection("/user/localActor1")
+        val message = TickCommand(time = 10L)
+        localActor1.tell(message, ActorRef.noSender())
+        return Mono.just("Agendamento iniciado!")
     }
 }

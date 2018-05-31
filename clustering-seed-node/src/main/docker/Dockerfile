@@ -4,7 +4,7 @@ VOLUME /tmp
 EXPOSE 8082
 EXPOSE 9005
 
-ENV USER_NAME clustering-remote-node
+ENV USER_NAME clustering-seed-node
 ENV APP_HOME /home/$USER_NAME/app
 ENV APP_NAME $USER_NAME-1.0-SNAPSHOT.jar
 

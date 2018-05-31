@@ -121,7 +121,6 @@ allprojects {
             compile project(':sharding')
             compile project(':maquinaDeEstadoFinito')
             compile project(':persistencia')
-
         }
 
         if(project.name.equals("akka-examples")){
