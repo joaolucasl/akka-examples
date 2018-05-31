@@ -2,6 +2,7 @@ FROM openjdk:8
 MAINTAINER marcos.arruda@moip.com.br
 VOLUME /tmp
 EXPOSE 8082
+EXPOSE 9005
 
 ENV USER_NAME generic-local-node
 ENV APP_HOME /home/$USER_NAME/app

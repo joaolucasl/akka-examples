@@ -7,7 +7,7 @@ services:
     hostname: generic-local-jvm-1
     container_name: generic-local-jvm-1
     ports:
-      - "8082:8082"
+      - "8081:8082"
     depends_on:
       - generic-remote-jvm-1
 
@@ -16,9 +16,5 @@ services:
     domainname: generic-remote-jvm-1
     hostname: generic-remote-jvm-1
     container_name: generic-remote-jvm-1
-
-  generic-remote-jvm-2:
-    image: marcos.akka/generic-remote-node:1.0-SNAPSHOT
-    domainname: generic-remote-jvm-2
-    hostname: generic-remote-jvm-2
-    container_name: generic-remote-jvm-2
+    ports:
+          - "8082:8082"

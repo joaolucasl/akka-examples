@@ -1,8 +1,8 @@
-package marcos.akka.application.general
+package marcos.akka.actors
 
 import akka.actor.ActorRef
+import akka.actor.ActorSelection
 import akka.actor.ActorSystem
-import akka.actor.Props
 import akka.pattern.Patterns
 import marcos.akka.configs.SpringExtension
 import marcos.akka.configs.toMono
@@ -16,24 +16,21 @@ import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
 @Service
-class GeneralService{
+class LocalService {
 
     @Autowired
     private lateinit var actorSystem: ActorSystem
     @Autowired
     private lateinit var springExtension: SpringExtension
 
-    fun simpleCallLocalActor(){
-        val props: Props = springExtension.get(actorSystem).localActorProps("localActor", "ator1")
-        val ator1: ActorRef = actorSystem.actorOf(props)
-        ator1.tell(MessageCommand(MessageType.MESSAGE, "Ola!"), ator1)
+    fun simpleCallLocalActor() {
+        val localActor1: ActorSelection = actorSystem.actorSelection("/user/localActor1")
+        localActor1.tell(MessageCommand(MessageType.MESSAGE, "Ola!"), ActorRef.noSender())
     }
 
     fun callRemoteActor(): Mono<RemoteResponseMessageCommand> {
-
-        val props: Props = springExtension.get(actorSystem).localActorProps("localActor", "atorLocal1")
-        val atorLocal1: ActorRef = actorSystem.actorOf(props)
+        val localActor1: ActorSelection = actorSystem.actorSelection("/user/localActor1")
         val message = RemoteRequestMessageCommand(MessageType.MESSAGE, "Ola, remoto!")
-        return toMono(Patterns.ask(atorLocal1, message, timeout))
+        return toMono(Patterns.ask(localActor1, message, timeout))
     }
 }

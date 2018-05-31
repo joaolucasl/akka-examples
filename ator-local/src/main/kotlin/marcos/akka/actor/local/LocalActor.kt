@@ -16,14 +16,15 @@ class LocalActor(val name: String) : AbstractActor() {
     override fun createReceive(): AbstractActor.Receive {
         return receiveBuilder()
                 .match(StartCommand::class.java, {
-                    printPretty(name, "Started!!")
+                    printPretty(self.path().toSerializationFormat(), "Started!!")
                 })
                 .match(MessageCommand::class.java, {
                     printPretty(name, it.messageContent.toString())
                 })
                 .match(RemoteRequestMessageCommand::class.java, {
-                    val atorRemoto1 = context.actorSelection("akka.tcp://AKKA_EXAMPLES@generic-remote-jvm-1:9005/user/atorRemoto1")
-                    atorRemoto1.forward(it, context)
+                    val remoteActor1 = context.actorSelection("akka.tcp://AKKA_EXAMPLES@generic-remote-jvm-1:9005/user/remoteActor1")
+                    printPretty(self.path().toSerializationFormat(), "Forwarding to ${remoteActor1.pathString()}")
+                    remoteActor1.forward(it, context)
                 })
                 .matchAny { msg ->
                     unhandled(msg)

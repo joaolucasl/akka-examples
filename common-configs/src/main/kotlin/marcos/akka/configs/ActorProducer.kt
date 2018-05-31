@@ -1,10 +1,10 @@
-package marcos.akka.actor.remote
+package marcos.akka.configs
 
 import akka.actor.Actor
 import akka.actor.IndirectActorProducer
 import org.springframework.context.ApplicationContext
 
-public class RemoteActorProducer(private val applicationContext: ApplicationContext, private val beanActorName: String, private val specificName: String) : IndirectActorProducer {
+class ActorProducer(private val applicationContext: ApplicationContext, private val beanActorName: String, private val specificName: String) : IndirectActorProducer {
     override fun produce(): Actor {
         return applicationContext.getBean(beanActorName, specificName) as Actor
     }
