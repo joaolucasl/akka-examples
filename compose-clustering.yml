@@ -19,6 +19,15 @@ services:
       akka_net:
         ipv4_address: 10.5.0.11
 
+  clustering-seed-remote-jvm-3:
+    image: marcos.akka/clustering-seed-node:1.0-SNAPSHOT
+    container_name: clustering-seed-remote-jvm-3
+    ports:
+      - "8085:8082"
+    networks:
+      akka_net:
+        ipv4_address: 10.5.0.12
+
   clustering-remote-jvm-1:
     image: marcos.akka/clustering-remote-node:1.0-SNAPSHOT
     container_name: clustering-remote-jvm-1
@@ -26,7 +35,7 @@ services:
       - "8086:8082"
     networks:
       akka_net:
-        ipv4_address: 10.5.0.12
+        ipv4_address: 10.5.0.13
 
   clustering-remote-jvm-2:
     image: marcos.akka/clustering-remote-node:1.0-SNAPSHOT
@@ -35,7 +44,7 @@ services:
       - "8087:8082"
     networks:
       akka_net:
-        ipv4_address: 10.5.0.13
+        ipv4_address: 10.5.0.14
 
   clustering-remote-jvm-3:
     image: marcos.akka/clustering-remote-node:1.0-SNAPSHOT
@@ -44,7 +53,7 @@ services:
       - "8088:8082"
     networks:
       akka_net:
-        ipv4_address: 10.5.0.14
+        ipv4_address: 10.5.0.15
 
 networks:
   akka_net:

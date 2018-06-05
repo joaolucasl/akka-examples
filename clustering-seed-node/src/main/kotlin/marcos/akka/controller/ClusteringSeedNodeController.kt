@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.RestController
 class ClusteringSeedNodeController @Autowired constructor(private val actorCreator: ActorCreator){
 
     init {
-        actorCreator.createRemoteActor()
+        actorCreator.createClusteringActor()
     }
 
     @GetMapping("/ok", produces = [MediaType.APPLICATION_JSON_UTF8_VALUE])
     private fun getOk():String {
-        return "{\"ok\":${actorCreator.remoteActorCreated}}"
+        return "{\"ok\":${actorCreator.clusteringActorCreated}}"
     }
 }
