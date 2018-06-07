@@ -32,15 +32,20 @@ class ClusteringSingletonEntrypointActor(val name: String) : AbstractActor() {
 
     override fun createReceive(): AbstractActor.Receive {
         return receiveBuilder()
-                .match(StartCommand::class.java) { printPretty(self.path().toString(), "Started!!") }
-                .match(ClusterSingletonEnd::class.java) { self.tell(PoisonPill.getInstance(), self) }
                 .match(MemberUp::class.java) { log.info("Member is Up: {}", it.member()) }
                 .match(UnreachableMember::class.java) { log.info("Member detected as unreachable: {}", it.member()) }
                 .match(MemberRemoved::class.java) { log.info("Member is Removed: {}", it.member()) }
-                .match(ClusterCommandRequest::class.java) { log.info("Starting to process ${it.messagesToProcess} messages on ${getLocalJVMAddress()}") }
+                .match(MemberEvent::class.java) { /* ignoring */ }
+                .match(StartCommand::class.java) { printPretty(self.path().toString(), "Started!!") }
+                .match(ClusterCommandRequest::class.java, this::handleClusterCommandRequest)
+                .match(ClusterSingletonEnd::class.java) { self.tell(PoisonPill.getInstance(), self) }
                 .matchAny { unhandled(it) }
-                //.match(MemberEvent::class.java) { }
                 .build()
+    }
+
+    private fun handleClusterCommandRequest(it: ClusterCommandRequest){
+        log.info("Starting to process ${it.messagesToProcess} messages on ${getLocalJVMAddress()}")
+        
     }
 
     private fun getLocalJVMAddress() = context.provider().defaultAddress.toString().split(":")[1].split("@")[1]
