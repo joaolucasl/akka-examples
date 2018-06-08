@@ -43,9 +43,8 @@ class ClusteringSingletonEntrypointActor(val name: String) : AbstractActor() {
                 .build()
     }
 
-    private fun handleClusterCommandRequest(it: ClusterCommandRequest){
+    private fun handleClusterCommandRequest(it: ClusterCommandRequest) {
         log.info("Starting to process ${it.messagesToProcess} messages on ${getLocalJVMAddress()}")
-        
     }
 
     private fun getLocalJVMAddress() = context.provider().defaultAddress.toString().split(":")[1].split("@")[1]

@@ -9,7 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-class ActorCreator(var localActorCreated:Boolean=false, var remoteActorCreated:Boolean=false, var agendamentoRemoteActorCreated:Boolean=false, var clusteringActorCreated:Boolean=false) {
+class ActorCreator(var localActorCreated:Boolean=false,
+                   var remoteActorCreated:Boolean=false,
+                   var agendamentoRemoteActorCreated:Boolean=false,
+                   var clusteringActorCreated:Boolean=false,
+                   var clusteringSingletonActorCreated:Boolean=false) {
 
     @Autowired
     private lateinit var actorSystem: ActorSystem
@@ -45,9 +49,9 @@ class ActorCreator(var localActorCreated:Boolean=false, var remoteActorCreated:B
     }
 
     fun createClusteringSingletonEntrypointActor() {
-        val props: Props = springExtension.get(actorSystem).actorProps("clusteringActor", "clusteringActor")
-        val clusteringActor: ActorRef = actorSystem.actorOf(props, "clusteringActor")
+        val props: Props = springExtension.get(actorSystem).singletonProps("entrypoint","clusteringSingletonEntrypointActor", "clusteringSingletonEntrypointActor")
+        val clusteringActor: ActorRef = actorSystem.actorOf(props, "clusteringSingletonEntrypointActor")
         clusteringActor.tell(StartCommand(), ActorRef.noSender())
-        clusteringActorCreated = true
+        clusteringSingletonActorCreated = true
     }
 }

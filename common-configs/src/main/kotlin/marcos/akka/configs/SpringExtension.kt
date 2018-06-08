@@ -1,9 +1,6 @@
 package marcos.akka.configs
 
-import akka.actor.AbstractExtensionId
-import akka.actor.ExtendedActorSystem
-import akka.actor.Extension
-import akka.actor.Props
+import akka.actor.*
 import akka.cluster.singleton.ClusterSingletonManager
 import akka.cluster.singleton.ClusterSingletonManagerSettings
 import marcos.akka.model.ClusterSingletonEnd
@@ -38,7 +35,7 @@ class SpringExtension : AbstractExtensionId<SpringExtension.SpringExt>(), Applic
         fun singletonProps(role: String, actorBeanName: String, specificName: String): Props {
             return ClusterSingletonManager.props(
                     Props.create(ActorProducer::class.java, applicationContext, actorBeanName, specificName),
-                    ClusterSingletonEnd(), singletonSettings.withRole(role))
+                    PoisonPill.getInstance(), singletonSettings.withRole(role))
         }
     }
 }
