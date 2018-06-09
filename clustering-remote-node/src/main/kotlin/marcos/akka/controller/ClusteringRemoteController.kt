@@ -11,10 +11,11 @@ class ClusteringRemoteController @Autowired constructor(private val actorCreator
 
     init {
         actorCreator.createClusteringActor()
+        actorCreator.createClusteringSingletonEntrypointActor()
     }
 
     @GetMapping("/ok", produces = [MediaType.APPLICATION_JSON_UTF8_VALUE])
     private fun getOk():String {
-        return "{\"ok\":${actorCreator.clusteringActorCreated}}"
+        return "{\"isDefaultActorOk\":${actorCreator.clusteringActorCreated}, \"isSingletonOk\":${actorCreator.clusteringSingletonActorCreated}}"
     }
 }

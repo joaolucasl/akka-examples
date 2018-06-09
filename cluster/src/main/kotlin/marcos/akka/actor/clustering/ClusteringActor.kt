@@ -6,7 +6,9 @@ import akka.cluster.ClusterEvent
 import akka.cluster.ClusterEvent.*
 import akka.event.Logging
 import marcos.akka.extensions.printPretty
+import marcos.akka.model.ClusterCommandIncrementCounter
 import marcos.akka.model.ClusterCommandRequest
+import marcos.akka.model.ClusterCommandResponse
 import marcos.akka.model.StartCommand
 import org.springframework.beans.factory.config.ConfigurableBeanFactory
 import org.springframework.context.annotation.Scope
@@ -16,8 +18,11 @@ import org.springframework.stereotype.Component
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 class ClusteringActor(val name: String) : AbstractActor() {
-    val log = Logging.getLogger(context.system, this)
-    val cluster = Cluster.get(context.system)
+
+    private var counter: Long = 0
+
+    private val log = Logging.getLogger(context.system, this)
+    private val cluster = Cluster.get(context.system)
 
     override fun preStart() {
         cluster.subscribe(self, ClusterEvent.initialStateAsEvents(),
@@ -31,6 +36,8 @@ class ClusteringActor(val name: String) : AbstractActor() {
     override fun createReceive(): AbstractActor.Receive {
         return receiveBuilder()
                 .match(StartCommand::class.java) { printPretty(self.path().toString(), "Started!!") }
+                .match(ClusterCommandIncrementCounter::class.java) { counter += it.value }
+                .match(ClusterCommandRequest::class.java, this::handleClusterCommandRequest)
                 .match(MemberUp::class.java) { mUp -> log.info("Member is Up: {}", mUp.member()) }
                 .match(UnreachableMember::class.java) { mUnreachable -> log.info("Member detected as unreachable: {}", mUnreachable.member()) }
                 .match(MemberRemoved::class.java) { mRemoved -> log.info("Member is Removed: {}", mRemoved.member()) }
@@ -39,6 +46,10 @@ class ClusteringActor(val name: String) : AbstractActor() {
                     unhandled(msg)
                 }
                 .build()
+    }
+
+    private fun handleClusterCommandRequest(it: ClusterCommandRequest) {
+        sender.tell(ClusterCommandResponse(self.path().toSerializationFormat(), counter), self)
     }
 
     private fun getLocalJVMAddress() = context.provider().defaultAddress.toString().split(":")[1].split("@")[1]

@@ -43,15 +43,13 @@ class ActorCreator(var localActorCreated:Boolean=false,
 
     fun createClusteringActor() {
         val props: Props = springExtension.get(actorSystem).actorProps("clusteringActor", "clusteringActor")
-        val clusteringActor: ActorRef = actorSystem.actorOf(props, "clusteringActor")
-        clusteringActor.tell(StartCommand(), ActorRef.noSender())
+        actorSystem.actorOf(props, "clusteringActor")
         clusteringActorCreated = true
     }
 
     fun createClusteringSingletonEntrypointActor() {
-        val props: Props = springExtension.get(actorSystem).singletonProps("entrypoint","clusteringSingletonEntrypointActor", "clusteringSingletonEntrypointActor")
-        val clusteringActor: ActorRef = actorSystem.actorOf(props, "clusteringSingletonEntrypointActor")
-        clusteringActor.tell(StartCommand(), ActorRef.noSender())
+        val props: Props = springExtension.get(actorSystem).singletonProps("worker","clusteringSingletonEntrypointActor", "singleton")
+        actorSystem.actorOf(props, "singleton")
         clusteringSingletonActorCreated = true
     }
 }
