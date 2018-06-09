@@ -16,19 +16,13 @@ class RemoteActor(val name: String) : AbstractActor() {
 
     override fun createReceive(): AbstractActor.Receive {
         return receiveBuilder()
-                .match(StartCommand::class.java) {
-                    printPretty(self.path().toString(), "Started!!")
-                }
+                .match(StartCommand::class.java) { printPretty(self.path().toString(), "Started!!") }
                 .match(RemoteRequestMessageCommand::class.java) {
-                    //printPretty(name, it.messageContent.toString())
-                    val msg = "Olá ${context.sender().path().toSerializationFormat().split(":")[1].split("@")[1]}, " +
-                            "estou na ${context.provider().defaultAddress.toString().split(":")[1].split("@")[1]}, como vai?"
-                    printPretty(name, msg)
-                    sender.tell(RemoteResponseMessageCommand(MessageType.RESPONSE, msg), self)
+                    "Olá ${context.sender()}, sou o $self, como vai?".apply {
+                        sender.tell(RemoteResponseMessageCommand(MessageType.RESPONSE, printPretty(this)), self)
+                    }
                 }
-                .matchAny { msg ->
-                    unhandled(msg)
-                }
+                .matchAny { unhandled(it) }
                 .build()
     }
 }

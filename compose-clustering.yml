@@ -1,59 +1,47 @@
 ---
 version: "2"
 services:
-  clustering-seed-remote-jvm-1:
-    image: marcos.akka/clustering-seed-node:1.0-SNAPSHOT
-    container_name: clustering-seed-remote-jvm-1
+  clustering-remote-jvm-1:
+    image: marcos.akka/clustering-remote-node:1.0-SNAPSHOT
+    container_name: clustering-remote-jvm-1
+    depends_on:
+      - clustering-remote-jvm-2
     ports:
-      - "8084:8082"
-    networks:
-      akka_net:
-        ipv4_address: 10.5.0.10
-
-  clustering-seed-remote-jvm-2:
-    image: marcos.akka/clustering-seed-node:1.0-SNAPSHOT
-    container_name: clustering-seed-remote-jvm-2
-    ports:
-      - "8085:8082"
+      - "8081:8082"
     networks:
       akka_net:
         ipv4_address: 10.5.0.11
 
-  clustering-seed-remote-jvm-3:
-    image: marcos.akka/clustering-seed-node:1.0-SNAPSHOT
-    container_name: clustering-seed-remote-jvm-3
+  clustering-remote-jvm-2:
+    image: marcos.akka/clustering-remote-node:1.0-SNAPSHOT
+    container_name: clustering-remote-jvm-2
+    depends_on:
+          - clustering-remote-jvm-3
     ports:
-      - "8085:8082"
+      - "8082:8082"
     networks:
       akka_net:
         ipv4_address: 10.5.0.12
 
-  clustering-remote-jvm-1:
+  clustering-remote-jvm-3:
     image: marcos.akka/clustering-remote-node:1.0-SNAPSHOT
-    container_name: clustering-remote-jvm-1
+    container_name: clustering-remote-jvm-3
+    depends_on:
+          - clustering-remote-jvm-4
     ports:
-      - "8086:8082"
+      - "8083:8082"
     networks:
       akka_net:
         ipv4_address: 10.5.0.13
 
-  clustering-remote-jvm-2:
+  clustering-remote-jvm-4:
     image: marcos.akka/clustering-remote-node:1.0-SNAPSHOT
-    container_name: clustering-remote-jvm-2
+    container_name: clustering-remote-jvm-4
     ports:
-      - "8087:8082"
+      - "8084:8082"
     networks:
       akka_net:
         ipv4_address: 10.5.0.14
-
-  clustering-remote-jvm-3:
-    image: marcos.akka/clustering-remote-node:1.0-SNAPSHOT
-    container_name: clustering-remote-jvm-3
-    ports:
-      - "8088:8082"
-    networks:
-      akka_net:
-        ipv4_address: 10.5.0.15
 
 networks:
   akka_net:

@@ -4,12 +4,10 @@ import akka.actor.AbstractActor
 import akka.cluster.Cluster
 import akka.cluster.ClusterEvent
 import akka.cluster.ClusterEvent.*
+import akka.cluster.client.ClusterClientReceptionist
 import akka.event.Logging
 import marcos.akka.extensions.printPretty
-import marcos.akka.model.ClusterCommandIncrementCounter
-import marcos.akka.model.ClusterCommandRequest
-import marcos.akka.model.ClusterCommandResponse
-import marcos.akka.model.StartCommand
+import marcos.akka.model.*
 import org.springframework.beans.factory.config.ConfigurableBeanFactory
 import org.springframework.context.annotation.Scope
 import org.springframework.stereotype.Component
@@ -27,6 +25,7 @@ class ClusteringActor(val name: String) : AbstractActor() {
     override fun preStart() {
         cluster.subscribe(self, ClusterEvent.initialStateAsEvents(),
                 MemberEvent::class.java, UnreachableMember::class.java)
+        ClusterClientReceptionist.get(context.system).registerService(self)
     }
 
     override fun postStop() {
@@ -36,19 +35,22 @@ class ClusteringActor(val name: String) : AbstractActor() {
     override fun createReceive(): AbstractActor.Receive {
         return receiveBuilder()
                 .match(StartCommand::class.java) { printPretty(self.path().toString(), "Started!!") }
-                .match(ClusterCommandIncrementCounter::class.java) { counter += it.value }
-                .match(ClusterCommandRequest::class.java, this::handleClusterCommandRequest)
-                .match(MemberUp::class.java) { mUp -> log.info("Member is Up: {}", mUp.member()) }
-                .match(UnreachableMember::class.java) { mUnreachable -> log.info("Member detected as unreachable: {}", mUnreachable.member()) }
-                .match(MemberRemoved::class.java) { mRemoved -> log.info("Member is Removed: {}", mRemoved.member()) }
-                .match(MemberEvent::class.java) { /* ingoring */ }
-                .matchAny { msg ->
-                    unhandled(msg)
+                .match(HelloCommand::class.java) { _ ->
+                    val message = "${self.path().toSerializationFormat()}: HELLO!"
+                    printPretty(message)
+                    sender.tell(message, self)
                 }
+                .match(IncrementCounterCommand::class.java) { counter += it.value }
+                .match(GetCounterClusterCommand::class.java, this::handleGetCounterClusterCommand)
+                .match(MemberUp::class.java) { printPretty("Member is Up: ${it.member()}") }
+                .match(UnreachableMember::class.java) { printPretty("Member detected as unreachable: ${it.member()}") }
+                .match(MemberRemoved::class.java) { printPretty("Member is Removed: ${it.member()}") }
+                .match(MemberEvent::class.java) { printPretty("${it.member()} received a member event") }
+                .matchAny {unhandled(it)}
                 .build()
     }
 
-    private fun handleClusterCommandRequest(it: ClusterCommandRequest) {
+    private fun handleGetCounterClusterCommand(it: GetCounterClusterCommand) {
         sender.tell(ClusterCommandResponse(self.path().toSerializationFormat(), counter), self)
     }
 
