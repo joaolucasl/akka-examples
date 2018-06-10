@@ -5,8 +5,6 @@ import akka.cluster.singleton.ClusterSingletonManager
 import akka.cluster.singleton.ClusterSingletonManagerSettings
 import akka.cluster.singleton.ClusterSingletonProxy
 import akka.cluster.singleton.ClusterSingletonProxySettings
-import marcos.akka.actor.clustering.ClusteringSingletonEntrypointActor
-import marcos.akka.model.ClusterSingletonEnd
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
 import org.springframework.stereotype.Service
@@ -28,8 +26,8 @@ class SpringExtension : AbstractExtensionId<SpringExtension.SpringExt>(), Applic
     }
 
     class SpringExt(@field:Volatile private var applicationContext: ApplicationContext?, private val system: ExtendedActorSystem) : Extension {
-        private val singletonSettings:ClusterSingletonManagerSettings = ClusterSingletonManagerSettings.create(system)
-        private val singletonProxySettings:ClusterSingletonProxySettings = ClusterSingletonProxySettings.create(system)
+        private val singletonSettings: ClusterSingletonManagerSettings = ClusterSingletonManagerSettings.create(system)
+        private val singletonProxySettings: ClusterSingletonProxySettings = ClusterSingletonProxySettings.create(system)
 
         fun actorProps(actorBeanName: String, specificName: String): Props {
             return Props.create(
@@ -42,7 +40,7 @@ class SpringExtension : AbstractExtensionId<SpringExtension.SpringExt>(), Applic
                     PoisonPill.getInstance(), singletonSettings)
         }
 
-        fun singletonProxyProps(role: String, path:String): Props {
+        fun singletonProxyProps(role: String, path: String): Props {
             return ClusterSingletonProxy.props(path,
                     singletonProxySettings)
         }

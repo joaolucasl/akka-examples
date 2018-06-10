@@ -7,7 +7,9 @@ import akka.cluster.ClusterEvent.*
 import akka.cluster.client.ClusterClientReceptionist
 import akka.event.Logging
 import marcos.akka.extensions.printPretty
-import marcos.akka.model.*
+import marcos.akka.model.HelloClusterCommand
+import marcos.akka.model.ResetClusterCommand
+import marcos.akka.model.StartCommand
 import org.springframework.beans.factory.config.ConfigurableBeanFactory
 import org.springframework.context.annotation.Scope
 import org.springframework.stereotype.Component
@@ -30,29 +32,29 @@ class ClusteringActor(val name: String) : AbstractActor() {
 
     override fun postStop() {
         cluster.unsubscribe(self)
+        ClusterClientReceptionist.get(context.system).unregisterService(self)
     }
 
     override fun createReceive(): AbstractActor.Receive {
         return receiveBuilder()
-                .match(StartCommand::class.java) { printPretty(self.path().toString(), "Started!!") }
-                .match(HelloCommand::class.java) { _ ->
-                    val message = "${self.path().toSerializationFormat()}: HELLO!"
-                    printPretty(message)
-                    sender.tell(message, self)
-                }
-                .match(IncrementCounterCommand::class.java) { counter += it.value }
-                .match(GetCounterClusterCommand::class.java, this::handleGetCounterClusterCommand)
-                .match(MemberUp::class.java) { printPretty("Member is Up: ${it.member()}") }
+                .match(StartCommand::class.java) { printPretty(self.path().toString(), "Started with $it") }
+                .match(MemberUp::class.java) {printPretty("Member is Up: ${it.member()}")}
                 .match(UnreachableMember::class.java) { printPretty("Member detected as unreachable: ${it.member()}") }
                 .match(MemberRemoved::class.java) { printPretty("Member is Removed: ${it.member()}") }
-                .match(MemberEvent::class.java) { printPretty("${it.member()} received a member event") }
-                .matchAny {unhandled(it)}
+                .match(MemberEvent::class.java) { /* ignored */ }
+                .match(HelloClusterCommand::class.java) {
+                    printPretty("ts: ${System.currentTimeMillis()/1000}, counter: ${++counter}, $self: HELLO --${it.selfAddress}!")
+                }
+                .match(ResetClusterCommand::class.java) {_ ->
+                    counter = 0
+                    printPretty("ts: ${System.currentTimeMillis()}, counter: $counter, $self: Resetting counter to 0")
+
+                }
+
+                .matchAny { unhandled(it) }
                 .build()
     }
 
-    private fun handleGetCounterClusterCommand(it: GetCounterClusterCommand) {
-        sender.tell(ClusterCommandResponse(self.path().toSerializationFormat(), counter), self)
-    }
 
     private fun getLocalJVMAddress() = context.provider().defaultAddress.toString().split(":")[1].split("@")[1]
 }

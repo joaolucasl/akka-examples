@@ -1,12 +1,8 @@
 package marcos.akka.extensions
 
-import akka.actor.ActorRef
-import akka.actor.ActorRefFactory
-import akka.actor.Props
 import akka.util.Timeout
 import scala.concurrent.duration.FiniteDuration
 import java.util.concurrent.TimeUnit
-import kotlin.reflect.KClass
 
 
 val duration = FiniteDuration.create(10, TimeUnit.SECONDS)
@@ -24,6 +20,7 @@ fun printPretty(msg: String):String {
     println("")
     return msg
 }
+fun printPrettyNoSpaces(msg: String) = println(">>>> $msg")
 //fun akkaMain(vararg clazzes: KClass<*>) {
 //    val array = clazzes.map { it.java.name }.toTypedArray()
 //    akka.Main.main(array)

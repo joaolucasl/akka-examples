@@ -22,4 +22,4 @@ USER root
 WORKDIR $APP_HOME
 RUN bash -c "touch $USER_NAME.jar"
 
-CMD java -jar $USER_NAME.jar $CONNECT_BOOTSTRAP_SERVERS
+CMD java -jar $USER_NAME.jar

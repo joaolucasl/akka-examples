@@ -1,6 +1,17 @@
 ---
 version: "2"
 services:
+  generic-local-jvm-0:
+    image: marcos.akka/generic-local-node:1.0-SNAPSHOT
+    container_name: generic-local-jvm-0
+    ports:
+      - "8080:8082"
+    depends_on:
+      - clustering-remote-jvm-1
+    networks:
+      akka_net:
+        ipv4_address: 10.5.0.3
+
   clustering-remote-jvm-1:
     image: marcos.akka/clustering-remote-node:1.0-SNAPSHOT
     container_name: clustering-remote-jvm-1

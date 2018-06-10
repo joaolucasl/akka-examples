@@ -31,10 +31,22 @@ class LocalService {
         return toMono(Patterns.ask(localActor1, message, timeout))
     }
 
-    fun startAgendamento():Mono<String> {
+    fun startAgendamento(): Mono<String> {
         val localActor1: ActorSelection = actorSystem.actorSelection("/user/localActor1")
         val message = TickCommand(time = 10L)
         localActor1.tell(message, ActorRef.noSender())
         return Mono.just("Agendamento iniciado!")
+    }
+
+    fun sendHelloToCluster(qtd:Long): Mono<String> {
+        val localActor1: ActorSelection = actorSystem.actorSelection("/user/localActor1")
+        localActor1.tell(HelloClusterCommand("", qtd), ActorRef.noSender())
+        return Mono.just("Hello Sent!")
+    }
+
+    fun sendResetToCluster(): Mono<String> {
+        val localActor1: ActorSelection = actorSystem.actorSelection("/user/localActor1")
+        localActor1.tell(ResetClusterCommand(), ActorRef.noSender())
+        return Mono.just("Reset Sent!")
     }
 }

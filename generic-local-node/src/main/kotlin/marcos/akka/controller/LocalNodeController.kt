@@ -5,6 +5,7 @@ import marcos.akka.actors.LocalService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import reactor.core.publisher.Mono
 
@@ -27,4 +28,10 @@ class LocalNodeController @Autowired constructor(private val actorCreator: Actor
 
     @GetMapping("/remote/agendamento/start")
     private fun agendamentoStart(): Mono<String> = localService.startAgendamento()
+
+    @GetMapping("/cluster/send-hello")
+    private fun sendHelloToCluster(@RequestParam qtd:Long?=0L): Mono<String> = localService.sendHelloToCluster(qtd?:0L)
+
+    @GetMapping("/cluster/send-reset")
+    private fun sendResetToCluster(): Mono<String> = localService.sendResetToCluster()
 }

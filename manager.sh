@@ -28,7 +28,7 @@ function prune(){
 }
 
 function stopAll(){
-    docker-compose -f compose-$(cat CURRENT_ENV).yml down
+    docker-compose -f compose-$(cat CURRENT_ENV).yml down 2> /dev/null
 }
 
 function buildAll(){
