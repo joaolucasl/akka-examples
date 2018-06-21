@@ -49,6 +49,8 @@ function printUsage(){
   echo -e "${BBlu}./manager.sh start                              ${Yel}#${BYel}start all${Yel} containers${RCol}"
   echo -e "${BBlu}./manager.sh status                             ${Yel}#${BYel}show all${Yel} containers status${RCol}"
   echo ''
+  echo -e "${BBlu}./manager.sh endpoints                          ${Yel}#${BYel}show endpoints${RCol}"
+  echo ''
   echoCurrentEnv
 }
 
@@ -70,6 +72,10 @@ function changeEnv(){
       echoCurrentEnv
       stopAll
   fi
+}
+
+function showEndpoints(){
+  cat /Users/marcosarruda/prog-apps/workspaces/workspace-data/akka-examples/generic-local-node/src/main/kotlin/marcos/akka/controller/LocalNodeController.kt
 }
 
 if [ $# -gt 1 ] && [ "$1" != "" ] && [ "$1" = "env" ] && [ "$2" != "" ]; then
@@ -100,4 +106,7 @@ elif [ "$1" = "status" ]; then
     prune
     echoCurrentEnv
     dockerps
+elif [ "$1" = "endpoints" ]; then
+    prune
+    showEndpoints
 fi
