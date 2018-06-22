@@ -22,7 +22,7 @@ class RemoteActor(val name: String) : AbstractActor() {
                 }
                 //answer 'sender' actor
                 .match(RemoteRequestMessageCommand::class.java) { _ ->
-                    "Olá ${context.sender()}, sou o $self, como vai?".answer(this)
+                    "ts: ${System.currentTimeMillis() / 1000} Olá ${context.sender()}, sou o $self, como vai?".answer(this)
                 }
                 //unhandled
                 .matchAny { unhandled(it) }

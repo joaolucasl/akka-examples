@@ -71,6 +71,6 @@ class ClusteringActor(val name: String) : AbstractActor() {
             "ts: ${System.currentTimeMillis() / 1000}, counter: ${++counter}, $self: hey! --${cmd.selfAddress}!"
 
     private fun generateResetCounterMessage() =
-            "ts: ${System.currentTimeMillis()}, counter: $counter, $self: Resetting counter to 0"
+            "ts: ${System.currentTimeMillis() / 1000}, counter: $counter, $self: Resetting counter to 0"
 
 }

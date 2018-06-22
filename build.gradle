@@ -89,8 +89,10 @@ allprojects {
             compile("org.apache.commons:commons-lang3:${commonsLang3Version}")
             compile("com.typesafe.akka:akka-actor_2.12:${akkaVersion}")
             compile("com.typesafe.akka:akka-remote_2.12:${akkaVersion}")
-            compile("com.typesafe.akka:akka-cluster_2.12:${akkaVersion}")
-            compile("com.typesafe.akka:akka-cluster-tools_2.12:${akkaVersion}")
+            if(project.name != "generic-remote-node" && project.name != "agendamento-remote-node"){
+                compile("com.typesafe.akka:akka-cluster_2.12:${akkaVersion}")
+                compile("com.typesafe.akka:akka-cluster-tools_2.12:${akkaVersion}")
+            }
             compile("com.typesafe.akka:akka-persistence_2.12:${akkaVersion}")
             compile("com.typesafe.akka:akka-persistence-query_2.12:${akkaVersion}")
             compile("com.typesafe.akka:akka-slf4j_2.12:${akkaVersion}")

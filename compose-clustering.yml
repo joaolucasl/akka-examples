@@ -8,6 +8,8 @@ services:
       - "8080:8082"
     depends_on:
       - clustering-remote-jvm-1
+    environment:
+          NODE_TYPE: "RECEPTIONIST"
     networks:
       akka_net:
         ipv4_address: 10.5.0.3

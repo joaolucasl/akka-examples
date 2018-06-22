@@ -20,18 +20,27 @@ class LocalNodeController @Autowired constructor(private val actorCreator: Actor
         return "{\"ok\":${actorCreator.localActorCreated}}"
     }
 
+
+
     @GetMapping("/local")
     private fun getLocal() = localService.simpleCallLocalActor()
 
     @GetMapping("/remote")
     private fun getRemote(): Mono<String> = localService.callRemoteActor().map { it.messageContent as String }
 
+
+
     @GetMapping("/remote/agendamento/start")
     private fun agendamentoStart(): Mono<String> = localService.startAgendamento()
 
-    @GetMapping("/cluster/send-hello")
-    private fun sendHelloToCluster(@RequestParam qtd:Long?=0L): Mono<String> = localService.sendHelloToCluster(qtd?:0L)
+    @GetMapping("/remote/agendamento/stop")
+    private fun agendamentoStop(): Mono<String> = localService.stopAgendamento()
 
-    @GetMapping("/cluster/send-reset")
+
+
+    @GetMapping("/cluster/increment")
+    private fun sendIncrementToCluster(@RequestParam qtd:Long?=0L): Mono<String> = localService.sendIncrementToCluster(qtd?:0L)
+
+    @GetMapping("/cluster/reset")
     private fun sendResetToCluster(): Mono<String> = localService.sendResetToCluster()
 }

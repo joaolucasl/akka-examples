@@ -40,6 +40,9 @@ function upAll(){
     docker-compose -f compose-$(cat CURRENT_ENV).yml up -d
 }
 
+function openCtop(){
+    ctop
+}
 function printUsage(){
   echo -e "${BBlu}./manager.sh env generic|clustering|sharding    ${Yel}#${BYel}change${Yel} env${RCol}"
   echo -e "${BBlu}./manager.sh reset                              ${Yel}#${BYel}stop all${Yel} containers and ${BYel}reset${Yel} env to generic${RCol}"
@@ -69,8 +72,8 @@ function changeEnv(){
   containsElement "$1" "${ENV_TYPES[@]}"
   if [ "$?" = "0" ];then
       echo "$1" > CURRENT_ENV
-      echoCurrentEnv
       stopAll
+      echoCurrentEnv
   fi
 }
 
@@ -95,6 +98,7 @@ elif [ "$1" = "rebuild-start" ]; then
     buildAll
     prune
     upAll
+    openCtop
 elif [ "$1" = "rebuild" ]; then
     stopAll
     buildAll
@@ -102,6 +106,7 @@ elif [ "$1" = "rebuild" ]; then
 elif [ "$1" = "start" ]; then
     prune
     upAll
+    openCtop
 elif [ "$1" = "status" ]; then
     prune
     echoCurrentEnv

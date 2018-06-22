@@ -15,6 +15,9 @@ class ActorSystemConfiguration {
     fun actorSystem(): ActorSystem {
         val system = ActorSystem.create("AKKA_EXAMPLES")
         springExtension!!.get(system)
+        for(i in 1..10){
+            println("-")
+        }
         return system
     }
 }

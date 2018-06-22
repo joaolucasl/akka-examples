@@ -8,4 +8,5 @@ class AgendamentoApplication
 
 fun main(args: Array<String>) {
     runApplication<AgendamentoApplication>(*args)
+    for (i in 1..10) println("")
 }

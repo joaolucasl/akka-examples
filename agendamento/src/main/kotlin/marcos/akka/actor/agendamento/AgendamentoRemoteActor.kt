@@ -23,7 +23,7 @@ class AgendamentoRemoteActor(val name: String) : AbstractActor() {
 
                 //print and answer 'sender' with TOCK command!
                 .match(TickCommand::class.java) {
-                    "Olá $sender, recebi um $it.".printAndSend(this)
+                    "ts: ${System.currentTimeMillis() / 1000} Olá $sender, recebi um $it.".printAndSend(this)
                 }
                 //unhandled
                 .matchAny { unhandled(it) }
@@ -35,5 +35,5 @@ private fun String.printAndSend(myself:AgendamentoRemoteActor) {
     //print on sysOut
     printPretty(myself.name, this)
     //responde com TOCK!
-    myself.sender.tell(TockCommand(MessageType.TOCK), myself.self)
+    myself.sender.tell(TockCommand(), myself.self)
 }

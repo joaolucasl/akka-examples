@@ -8,4 +8,5 @@ class GenericRemoteApplication
 
 fun main(args: Array<String>) {
     runApplication<GenericRemoteApplication>(*args)
+    for (i in 1..10) println("")
 }
