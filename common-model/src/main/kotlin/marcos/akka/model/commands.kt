@@ -12,7 +12,7 @@ data class TickCommand(val messageType: MessageType=MessageType.TICK, val time:L
 data class TockCommand(val messageType: MessageType=MessageType.TOCK) : Serializable
 data class StopScheduledEventCommand(val messageType: MessageType=MessageType.TOCK) : Serializable
 
-data class HelloClusterCommand(var selfAddress: String="", val qtd:Long=0) : Serializable
+data class IncrementCounterCommand(var selfAddress: String="", val qtd:Long=0) : Serializable
 data class ListenCommand(var selfAddress: String="", val currentCounter:Long=0) : Serializable
 class ResetClusterCommand : Serializable
 

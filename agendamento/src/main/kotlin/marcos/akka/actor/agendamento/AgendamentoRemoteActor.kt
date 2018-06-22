@@ -16,14 +16,24 @@ class AgendamentoRemoteActor(val name: String) : AbstractActor() {
 
     override fun createReceive(): AbstractActor.Receive {
         return receiveBuilder()
-                .match(StartCommand::class.java) { printPretty("$self, Started!!") }
-                .match(TickCommand::class.java) {
-                    "Olá $sender, recebi um $it.".apply {
-                        printPretty(name, this)
-                        sender.tell(TockCommand(MessageType.TOCK), self)
-                    }
+                //print start message
+                .match(StartCommand::class.java) { _ ->
+                    printPretty("$self, Started!!")
                 }
+
+                //print and answer 'sender' with TOCK command!
+                .match(TickCommand::class.java) {
+                    "Olá $sender, recebi um $it.".printAndSend(this)
+                }
+                //unhandled
                 .matchAny { unhandled(it) }
                 .build()
     }
+}
+
+private fun String.printAndSend(myself:AgendamentoRemoteActor) {
+    //print on sysOut
+    printPretty(myself.name, this)
+    //responde com TOCK!
+    myself.sender.tell(TockCommand(MessageType.TOCK), myself.self)
 }

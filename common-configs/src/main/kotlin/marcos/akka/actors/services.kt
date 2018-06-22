@@ -13,16 +13,12 @@ import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
 @Service
-class LocalService {
+class LocalService @Autowired constructor(private val actorSystem: ActorSystem, private val springExtension: SpringExtension) {
 
-    @Autowired
-    private lateinit var actorSystem: ActorSystem
-    @Autowired
-    private lateinit var springExtension: SpringExtension
-
-    fun simpleCallLocalActor() {
+    fun simpleCallLocalActor():Mono<String> {
         val localActor1: ActorSelection = actorSystem.actorSelection("/user/localActor1")
         localActor1.tell(MessageCommand(MessageType.MESSAGE, "Ola!"), ActorRef.noSender())
+        return Mono.just("Chamei o localActor1!")
     }
 
     fun callRemoteActor(): Mono<RemoteResponseMessageCommand> {
@@ -40,13 +36,13 @@ class LocalService {
 
     fun sendHelloToCluster(qtd:Long): Mono<String> {
         val localActor1: ActorSelection = actorSystem.actorSelection("/user/localActor1")
-        localActor1.tell(HelloClusterCommand("", qtd), ActorRef.noSender())
-        return Mono.just("Hello Sent!")
+        localActor1.tell(IncrementCounterCommand("", qtd), ActorRef.noSender())
+        return Mono.just("Enviei $qtd mensagem(ns) pro cluster!")
     }
 
     fun sendResetToCluster(): Mono<String> {
         val localActor1: ActorSelection = actorSystem.actorSelection("/user/localActor1")
         localActor1.tell(ResetClusterCommand(), ActorRef.noSender())
-        return Mono.just("Reset Sent!")
+        return Mono.just("Enviei um reset pro cluster!")
     }
 }
