@@ -18,4 +18,5 @@ build/
 */*.iml
 
 .gradletasknamecache
+./CURRENT_ENV
 CURRENT_ENV
